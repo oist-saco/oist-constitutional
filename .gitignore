@@ -7,6 +7,9 @@
 confidential_files/*
 !confidential_files/README.md
 
+### Mac ###
+.DS_Store
+
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
