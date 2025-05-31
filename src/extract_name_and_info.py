@@ -15,7 +15,7 @@ soup = BeautifulSoup(html_content, 'html.parser')
 people = soup.find_all("div", class_="oist-pl-teaser__wrapper oist-pl-department__teaser__wrapper")
 
 # Associating positions names with a string to use for separating output
-positions_dict = { 'phds'    : {'OIST Student'}
+positions_dict = { 'phds'    : {'OIST Student', 'Junior Research Fellow'}
                   ,'interns' : {'Research Intern'}
                   ,'srs'     : {'Visiting Research Student','Special Research Student'}
                   ,'others'  : set()
