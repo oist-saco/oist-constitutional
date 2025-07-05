@@ -1,8 +1,14 @@
 from bs4 import BeautifulSoup
 import csv
+import os
 
-# Path to your file
-file_path = '../confidential_files/people_dir_html_20250613.txt'
+# Path to base directory of this project
+base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Path to text file containing the HTML content
+file_path = os.path.join(
+    base_dir, "confidential_files/people_dir_html_20250613.txt"
+)
 
 # Read the HTML content from the file
 with open(file_path, 'r', encoding='utf-8') as file:
@@ -43,7 +49,7 @@ members_info = []
 # Iterate through each person and extract the relevant information
 for person in people:
     name = person.find("div", class_="oist-pl-department__person-name-en")
-    
+
     # Extracting the position name
     position = person.find("div", class_="oist-pl-department__position__name-en")
     if position is None:

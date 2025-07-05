@@ -1,5 +1,17 @@
 import csv
 import re
+import os
+
+# Path to base directory of this project
+base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Path to text file containing the HTML content
+input_csv_file = os.path.join(
+    base_dir, "confidential_files/members_info_eligible.csv"
+)
+output_txt_file = os.path.join(
+    base_dir, "confidential_files/webform_options.txt"
+)
 
 def sanitize(input_string):
     """Sanitize the input string to be used as a safe key."""
@@ -25,9 +37,6 @@ def create_webform_options(input_file, output_file):
 
     print(f"Options successfully saved to {output_file}.")
 
-# Specify the input and output file paths
-input_csv_file = '../confidential_files/members_info_eligible.csv'
-output_txt_file = '../confidential_files/webform_options.txt'
 
 # Generate the options file
 create_webform_options(input_csv_file, output_txt_file)
