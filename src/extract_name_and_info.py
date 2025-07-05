@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 import csv
 
 # Path to your file
-file_path = '../confidential_files/people_dir_html_20250514.txt'
+file_path = '../confidential_files/people_dir_html_20250613.txt'
 
 # Read the HTML content from the file
 with open(file_path, 'r', encoding='utf-8') as file:
@@ -15,9 +15,20 @@ soup = BeautifulSoup(html_content, 'html.parser')
 people = soup.find_all("div", class_="oist-pl-teaser__wrapper oist-pl-department__teaser__wrapper")
 
 # Associating positions names with a string to use for separating output
-positions_dict = { 'phds'    : {'OIST Student', 'Junior Research Fellow'}
-                  ,'interns' : {'Research Intern'}
-                  ,'srs'     : {'Visiting Research Student','Special Research Student'}
+# General
+#positions_dict = { 'phds'    : {'oist student', 'junior research fellow'}
+#                  ,'interns' : {'research intern'}
+#                  ,'srs'     : {'visiting research student','special research student'}
+#                  ,'others'  : set()
+#                 }
+# For amendment voting
+#positions_dict = { 'voters'     : {'oist student','junior research fellow','special research student'}
+#                  ,'non-voters' : {'research intern','visiting research student'}
+#                  ,'others'  : set()
+#                 }
+# For being elected to SC positions
+positions_dict = { 'eligible'     : {'oist student','special research student'}
+                  ,'non-eligible' : {'research intern','visiting research student','junior research fellow'}
                   ,'others'  : set()
                  }
 
@@ -89,7 +100,10 @@ def write_group_members_to_file(filepath, group):
       writer.writerow(['Name', 'Email', 'Position'])
       # Write the member information if they belong to the specified group
       for member in members_info:
-          if member['position'] in positions_dict[group]: 
+          if member['position'].lower() in positions_dict[group]: 
+              print(member['position'])
+              if group == 'voters':
+                print(group,member)
               writer.writerow(member.values())
 
   print(f"Information about {group} successfully saved to {output_file_path}.")

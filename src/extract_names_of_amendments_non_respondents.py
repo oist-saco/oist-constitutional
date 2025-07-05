@@ -10,10 +10,11 @@ from rapidfuzz import process, fuzz
 
 input_folder  = "../confidential_files/"
 output_folder = "../confidential_files/"
+output_filename = "non_voter_mails.csv"
 
 # Load data
-respondents = pd.read_csv(input_folder + "constitutional_amendments_2024_20250514.csv", skiprows=2)
-all_people = pd.read_csv(input_folder + "members_info_phds.csv")
+respondents = pd.read_csv(input_folder + "constitutional_amendments_2024_20250629.csv", skiprows=2)
+all_people = pd.read_csv(input_folder + "members_info_voters.csv")
 
 # Normalize identifiers
 respondents_ids = respondents["Username"].dropna().astype(str).str.lower().str.replace("-", ".")
@@ -52,6 +53,7 @@ for resp_number, resp_id in respondent_ids.items():
 fuzzy_match_df = pd.DataFrame(fuzzy_matches).sort_values(by="Score", ascending=False)
 print("\n\n Fuzzy matching results to review:")
 print(fuzzy_match_df.to_markdown())
+print("\n Manually add the mails that do not match (low scores) to the non-voter list.")
 
 # Obtain all the people that supposedly voted
 # In order not to send mails to people that voted, we include all fuzzy matched mails
@@ -62,5 +64,6 @@ people_who_voted = pd.concat([exact_matches, fuzzy_match_df[["Username","Clean e
 people_who_did_not_vote = remaining_people[~remaining_people.index.isin(fuzzy_match_df["All people index"])]
 
 # Save results
-people_who_did_not_vote["Clean email"].to_csv(output_folder+"non_voter_mails.csv", index=False, header=False)
+people_who_did_not_vote["Clean email"].to_csv(output_folder+output_filename, index=False, header=False)
+print(f"\n Results saved in: {output_folder+output_filename}\n")
 

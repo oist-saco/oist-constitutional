@@ -26,7 +26,7 @@ def create_webform_options(input_file, output_file):
     print(f"Options successfully saved to {output_file}.")
 
 # Specify the input and output file paths
-input_csv_file = '../confidential_files/members_info.csv'
+input_csv_file = '../confidential_files/members_info_eligible.csv'
 output_txt_file = '../confidential_files/webform_options.txt'
 
 # Generate the options file
