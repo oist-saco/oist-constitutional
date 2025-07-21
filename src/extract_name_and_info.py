@@ -7,7 +7,7 @@ base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Path to text file containing the HTML content
 file_path = os.path.join(
-    base_dir, "confidential_files/people_dir_html_20250613.txt"
+    base_dir, "confidential_files/people_dir_html_20250711.txt"
 )
 
 # Read the HTML content from the file
@@ -28,15 +28,15 @@ people = soup.find_all("div", class_="oist-pl-teaser__wrapper oist-pl-department
 #                  ,'others'  : set()
 #                 }
 # For amendment voting
-#positions_dict = { 'voters'     : {'oist student','junior research fellow','special research student'}
-#                  ,'non-voters' : {'research intern','visiting research student'}
-#                  ,'others'  : set()
-#                 }
-# For being elected to SC positions
-positions_dict = { 'eligible'     : {'oist student','special research student'}
-                  ,'non-eligible' : {'research intern','visiting research student','junior research fellow'}
+positions_dict = { 'voters'     : {'oist student','junior research fellow','special research student'}
+                  ,'non-voters' : {'research intern','visiting research student'}
                   ,'others'  : set()
                  }
+# For being elected to SC positions
+#positions_dict = { 'eligible'     : {'oist student','special research student'}
+#                  ,'non-eligible' : {'research intern','visiting research student','junior research fellow'}
+#                  ,'others'  : set()
+#                 }
 
 # Listing all positions defined
 known_positions = set()

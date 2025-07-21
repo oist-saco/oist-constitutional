@@ -13,7 +13,7 @@ output_folder = "../confidential_files/"
 output_filename = "non_voter_mails.csv"
 
 # Load data
-respondents = pd.read_csv(input_folder + "constitutional_amendments_2024_20250629.csv", skiprows=2)
+respondents = pd.read_csv(input_folder + "constitutional_amendments_2024_20250707.csv", skiprows=2)
 all_people = pd.read_csv(input_folder + "members_info_voters.csv")
 
 # Normalize identifiers

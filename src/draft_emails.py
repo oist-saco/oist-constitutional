@@ -2,31 +2,34 @@ import csv
 from collections import defaultdict
 import os
 
+# Path to base directory of this project
+base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 # File path for the CSV file containing nominations
-nominations_file = (
-    # "confidential_files/input_files/student_council_officer_nominations_2025_winter_20250213_1513.csv"
-    "confidential_files/input_files/student_council_officer_nominations_2025_winter_all_20250213_1517.csv"
+nominations_file = os.path.join(base_dir,
+    'confidential_files/student_council_officer_nominations_2025_summer_20250705.csv'
 )
 
 # Expected positions, mapped to normalized versions for consistency
 expected_positions = [
+    "Chair",
     "Vice Chair",
     "Secretary",
     "Communications Officer",
-    # "Diversity Officer",
-    # "Faculty Assembly Representative",
+    "Diversity Officer",
+    "Faculty Assembly Representative",
     "Events Officer",
-    "Academic Officer",
-    "Welfare Officer",
-    "Health and Safety Officer",
-    "Sustainability Representative",
-    # "IT Representative",
-    # "Senior Academic Deputy",
-    # "Junior Academic Deputy",
-    # "GEDI Representative",
-    # "Culture and External Relations Officer",
-    "CDC Representative",
-    "Constitutional Officer",
+    #"Academic Officer",
+    #"Welfare Officer",
+    #"Health and Safety Officer",
+    #"Sustainability Representative",
+    "IT Officer",
+    "Junior Academic Deputy",
+    "Senior Academic Deputy",
+    "GEDI Representative",
+    "Culture and External Relations Representative",
+    #"CDC Representative",
+    #"Constitutional Officer",
 ]
 
 
@@ -48,6 +51,11 @@ nominees = defaultdict(set)
 position_counts = defaultdict(int)  # Dictionary to count nominations for each position
 
 with open(nominations_file, "r", encoding="utf-8") as csvfile:
+
+    # Skip first two rows
+    for i in range(2):
+        next(csvfile)
+
     reader = csv.DictReader(csvfile, delimiter=",")
     normalized_columns = normalize_columns(reader.fieldnames)
 
@@ -64,8 +72,8 @@ with open(nominations_file, "r", encoding="utf-8") as csvfile:
 
 # Email drafting parameters
 hustings_day = "Friday"
-hustings_date = "18th of October"
-time = "12:00"
+hustings_date = "11th of July"
+time = "17:00"
 hustings_date_and_time = f"{hustings_date}, {time}"
 
 
@@ -97,7 +105,7 @@ If you have any questions, feel free to reach out to me, [studentcouncil@oist.jp
 
 Best,
 
-Sutashu Tomonaga
+Simone Tandurella
 
 Student Assembly Constitutional Officer (SACO)
 """
@@ -116,7 +124,7 @@ for (name, email), positions in nominees.items():
 
     # Save the draft email to a file
     filename = f"nomination_email_to_{name.replace(' ', '_')}.txt"
-    file_path = os.path.join("confidential_files", "email_drafts", filename)
+    file_path = os.path.join(base_dir, "confidential_files", "email_drafts", filename)
     with open(file_path, "w", encoding="utf-8") as f:
         f.write(email_content)
     print(f"Drafted email for {name} saved as {filename}.")
@@ -152,14 +160,14 @@ def output_nominees_for_power_automate(nominees):
     # get date label yyyymmdd_hhmm from today using datetime
     import datetime
     today_label = datetime.datetime.now().strftime("%Y%m%d_%H%M")
-    output_file = os.path.join("confidential_files", "generated_temp_files", f"nominees_list_for_power_automate_{today_label}.json")
+    output_file = os.path.join(base_dir, "confidential_files", f"nominees_list_for_power_automate_{today_label}.json")
     with open(output_file, "w", encoding="utf-8") as f:
         json.dump(nominees_list, f, ensure_ascii=False, indent=4)
 
     print(f"Nominees' Name/Email/Positions JSON saved as {output_file}")
 
     # Output just the emails for BCC mass emails
-    output_email_list = os.path.join("confidential_files", "nominees_emails.txt")
+    output_email_list = os.path.join(base_dir, "confidential_files", "nominees_emails.txt")
     with open(output_email_list, "w", encoding="utf-8") as f:
         for nominee in nominees_list:
             f.write(nominee["Email"] + "\n")
@@ -177,6 +185,7 @@ for position, count in position_counts.items():
 total_count_core_officers = sum(
     position_counts[pos]
     for pos in [
+        "Chair",
         "Vice Chair",
         "Secretary",
         "Communications Officer",
@@ -187,18 +196,17 @@ total_count_core_officers = sum(
         "Faculty Assembly Representative",
         "Events Officer",
         "Sustainability Representative"
-
     ]
 )
 
 total_count_associate_officers = sum(
     position_counts[pos]
     for pos in [
-        "IT Representative",
+        "IT Officer",
         "Senior Academic Deputy",
         "Junior Academic Deputy",
         "GEDI Representative",
-        "Culture and External Relations Officer",
+        "Culture and External Relations Representative",
         "CDC Representative",
         "Constitutional Officer",
     ]
