@@ -12,7 +12,13 @@ def test_args(X):
         print("""
         Script to automatically parse the results of voting student council elections as of 2019/02/13.
         USAGE:
-        python voting_results.txt <csv_file> <log_file> <out_path>""")
+        python voting_results.py <csv_file> <log_file> <out_path>
+
+        To make this compatible with OIST groups website forms:
+          1. Remove first line containing the form name
+          2. Remove the "Submission Details" string. Leave quotation marks empty.
+          3. Rewrite the name of the corresponding positions in the empty spots (i.e. above any candidates beside the first one)
+              """)
         sys.exit()
 
 def set_logger(logfile):
@@ -47,13 +53,13 @@ def data_splitter(df, col_idx):
     """
     given the data frame of votes, return a list of data frames per position, splitted on the column col_idx
     """
-
     labels = df.loc[:, col_idx]
     outlist = []
 
     for lab in set(labels):
         between = labels == lab
-        outlist.append(df[between])
+        if not (df[between].empty): 
+          outlist.append(df[between])
 
     return outlist
 
